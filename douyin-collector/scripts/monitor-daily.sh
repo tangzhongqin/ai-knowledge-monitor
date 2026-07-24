@@ -190,6 +190,34 @@ high_impact = [u for u in raw_updates if u['stars'] >= 1000]
 new_repos = [u for u in raw_updates if u['stars'] < 100]
 active_authors = len(set(u['author'] for u in raw_updates))
 dim_counts = {}
+
+# 为重点仓库获取今日 commit 信息
+import subprocess
+def fetch_commits(author, repo):
+    """获取仓库最近 24h 的 commit 信息"""
+    try:
+        since = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime('%Y-%m-%dT%H:%M:%SZ')
+        result = subprocess.run(
+            ["gh", "api", f"repos/{author}/{repo}/commits?since={since}&per_page=5",
+             "--jq", ".[].commit.message"],
+            capture_output=True, text=True, timeout=10
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            msgs = []
+            for line in result.stdout.strip().split('\n')[:3]:
+                title = line.split('\n')[0].strip()[:100]
+                msgs.append(title)
+            return msgs
+    except:
+        pass
+    return []
+
+# 对重点仓库（高星或新仓库）获取 commit
+for u in raw_updates:
+    if u['stars'] >= 500 or u['stars'] < 100:
+        u['commits'] = fetch_commits(u['author'], u['repo'])
+    else:
+        u['commits'] = []
 for u in raw_updates:
     dim = map_to_dimension(u['desc'], u['repo'])
     dim_counts[dim] = dim_counts.get(dim, 0) + 1
@@ -236,16 +264,19 @@ if high_impact:
     lines.append("")
     lines.append("> 这些是行业标杆项目的动态，代表技术方向。**优先阅读**。")
     lines.append("")
-    lines.append("| 作者 | 仓库 | ⭐ | 关联维度 | 这个对你有什么用 |")
-    lines.append("|------|------|-----|----------|------------------|")
-    for u in high_impact[:10]:
+    lines.append("| 作者 | 仓库 | ⭐ | 今日提交了什么 | 关联维度 |")
+    lines.append("|------|------|-----|---------------|----------|")
+    for u in high_impact[:15]:
         dim = map_to_dimension(u['desc'], u['repo'])
         dim_short = dim.split('-')[1] if '-' in dim else dim[:6]
         author_link = f"[{u['author']}](https://github.com/{u['author']})"
         repo_link = f"[{u['repo']}]({u['url']})"
-        desc_short = u['desc'][:50] if u['desc'] else ''
-        use_hint = "了解最新功能/方向" if u['stars'] > 50000 else "学习架构设计/代码组织" if u['stars'] > 10000 else "发现新工具/工作流"
-        lines.append(f"| {author_link} | {repo_link} | {u['stars']} | {dim_short} | {use_hint} |")
+        commits = u.get('commits', [])
+        if commits:
+            commit_str = '<br>'.join(f'• {c[:90]}' for c in commits[:3])
+        else:
+            commit_str = u['desc'][:80] if u['desc'] else '_(例行更新)_'
+        lines.append(f"| {author_link} | {repo_link} | {u['stars']} | {commit_str} | {dim_short} |")
     lines.append("")
 
 # 全部动态（按维度分组）
@@ -269,13 +300,17 @@ if total_updates > 0:
         updates = dim_groups[dim]
         lines.append(f"### {dim} ({len(updates)} 条)")
         lines.append("")
-        lines.append("| 作者 | 仓库 | ⭐ | 一句话 |")
-        lines.append("|------|------|-----|--------|")
-        for u in updates[:10]:
+        lines.append("| 作者 | 仓库 | ⭐ | 今日提交 |")
+        lines.append("|------|------|-----|----------|")
+        for u in updates[:15]:
             author_link = f"[{u['author']}](https://github.com/{u['author']})"
             repo_link = f"[{u['repo']}]({u['url']})"
-            desc = u['desc'][:60] if u['desc'] else '-'
-            lines.append(f"| {author_link} | {repo_link} | {u['stars']} | {desc} |")
+            commits = u.get('commits', [])
+            if commits:
+                detail = ' · '.join(c[:80] for c in commits[:2])
+            else:
+                detail = u['desc'][:70] if u['desc'] else '-'
+            lines.append(f"| {author_link} | {repo_link} | {u['stars']} | {detail} |")
         lines.append("")
 else:
     lines.append("---")
