@@ -1,0 +1,29 @@
+name: Daily AI Monitor
+
+on:
+  schedule:
+    # 每天 UTC 1:00 = 北京时间 9:00
+    - cron: '0 1 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Daily Monitor
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash douyin-collector/scripts/monitor-daily.sh
+
+      - name: Commit Report
+        run: |
+          git config user.name "AI Monitor Bot"
+          git config user.email "bot@ai-monitor.local"
+          git add AI知识体系/每日监控/
+          git diff --staged --quiet || git commit -m "📡 Daily: $(date +%Y-%m-%d)"
+          git push

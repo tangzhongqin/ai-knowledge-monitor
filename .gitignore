@@ -16,4 +16,3 @@ node_modules/
 # 但保留目录结构
 !douyin-collector/output/.gitkeep
 !douyin-collector/models/.gitkeep
-.github/
