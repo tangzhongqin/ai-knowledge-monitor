@@ -1,0 +1,19 @@
+# 抖音素材
+douyin-collector/output/*
+douyin-collector/models/*
+douyin-collector/.venv/*
+douyin_cookies.txt
+
+# 系统文件
+.DS_Store
+__pycache__/
+*.pyc
+node_modules/
+
+# 临时文件
+/tmp/
+
+# 但保留目录结构
+!douyin-collector/output/.gitkeep
+!douyin-collector/models/.gitkeep
+.github/
