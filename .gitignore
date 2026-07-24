@@ -1,7 +1,7 @@
 # 抖音素材
-douyin-collector/output/*
-douyin-collector/models/*
-douyin-collector/.venv/*
+01_抖音素材收集/output/*
+01_抖音素材收集/models/*
+01_抖音素材收集/.venv/*
 douyin_cookies.txt
 
 # 系统文件
@@ -14,5 +14,6 @@ node_modules/
 /tmp/
 
 # 但保留目录结构
-!douyin-collector/output/.gitkeep
-!douyin-collector/models/.gitkeep
+!01_抖音素材收集/output/.gitkeep
+!01_抖音素材收集/models/.gitkeep
+_第三方库/

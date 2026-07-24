@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>抖音素材收集 - 一键书签 v3</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 60px auto; padding: 20px; line-height: 1.6; }
+  .btn { display: inline-block; padding: 18px 36px; background: #fe2c55; color: #fff;
+    text-decoration: none; border-radius: 10px; font-size: 20px; font-weight: bold; cursor: move; }
+  .section { background: #f8f8f8; padding: 20px; border-radius: 10px; margin: 20px 0; }
+  h3 { margin-top: 0; }
+  ol li { margin: 8px 0; }
+  .tip { background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 15px; }
+</style>
+</head>
+<body>
+
+<h1>🎬 抖音一键收集 v3</h1>
+
+<div class="section">
+<h3>🔧 设置（拖到书签栏）：</h3>
+<p style="text-align:center;margin:25px 0">
+  <a class="btn" href="javascript:(function(){var s=new Set();function c(){document.querySelectorAll('a[href*=\"/video/\"],a[href*=\"/note/\"]').forEach(function(a){if(a.href&&!s.has(a.href)){s.add(a.href)}})}c();var i=0,e=0;var t=setInterval(function(){window.scrollTo(0,document.body.scrollHeight);var b=s.size;c();if(s.size===b){e++;if(e>5){clearInterval(t);done()}}else{e=0;i++}},1500);setTimeout(function(){clearInterval(t);done()},90000);function done(){var u=[...s].join('\n');var ta=document.createElement('textarea');ta.value=u;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);var n=s.size;var el=document.createElement('div');el.style='position:fixed;top:20px;right:20px;background:#fe2c55;color:#fff;padding:16px 24px;border-radius:10px;z-index:99999;font-size:16px;font-weight:bold;box-shadow:0 4px 20px rgba(0,0,0,.3)';el.textContent='✅ 已复制 '+n+' 条链接！去告诉 Claude 吧';document.body.appendChild(el);setTimeout(function(){el.remove()},5000)}})();">📋 一键收集</a>
+</p>
+</div>
+
+<div class="section">
+<h3>📅 每天使用（3 秒）：</h3>
+<ol>
+  <li>打开 <a href="https://www.douyin.com/user/self?showTab=like" target="_blank">抖音喜欢页</a></li>
+  <li>点一下书签栏的 <strong>"📋 一键收集"</strong></li>
+  <li>看到 "✅ 已复制" 提示后，回来告诉 Claude <strong>"好了"</strong></li>
+</ol>
+</div>
+
+<div class="tip">
+💡 <strong>原理</strong>：书签自动滚动收集链接 → 复制到剪贴板 → Claude 通过 pbpaste 读取 → 自动处理。你只需点一下。
+</div>
+
+</body>
+</html>

@@ -2,11 +2,11 @@
 # ============================================
 # T1 50 人每日 GitHub 监控
 # 用法: bash monitor-daily.sh [--notify]
-# 输出: AI知识体系/每日监控/YYYY-MM-DD.md
+# 输出: 02_GitHub创作者监控/reports/YYYY-MM-DD.md
 # ============================================
 source "$(dirname "$0")/../config.sh" 2>/dev/null || true
 PROJ="$(cd "$(dirname "$0")/../.." && pwd)"
-OUTDIR="$PROJ/AI知识体系/每日监控"
+OUTDIR="$PROJ/02_GitHub创作者监控/reports"
 mkdir -p "$OUTDIR"
 TODAY=$(date +%Y-%m-%d)
 OUTFILE="$OUTDIR/$TODAY.md"
@@ -391,4 +391,4 @@ fi
 rm -rf "$TMP"
 
 echo ""
-echo "  下次运行: 明天或手动 bash monitor-daily.sh"
+echo "  下次运行: 明天或手动 bash 02_GitHub创作者监控/scripts/monitor.sh"

@@ -1,0 +1,17 @@
+{
+  "name": "抖音素材收集",
+  "version": "1.0",
+  "description": "一键提取抖音喜欢列表中的视频和图文链接",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "host_permissions": ["*://*.douyin.com/*"],
+  "action": {
+    "default_title": "抖音素材收集",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["*://*.douyin.com/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }]
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>抖音链接提取 - 书签工具</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 80px auto; padding: 20px; }
+  h1 { font-size: 24px; }
+  .bookmarklet { display: inline-block; padding: 16px 32px; background: #fe2c55; color: #fff;
+    text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: move; }
+  .bookmarklet:hover { background: #e0264d; }
+  .steps { background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0; }
+  .steps li { margin: 10px 0; }
+  code { background: #eee; padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<h1>🎬 抖音喜欢列表提取</h1>
+
+<div class="steps">
+<h3>设置步骤（只需一次）：</h3>
+<ol>
+  <li>确保浏览器书签栏是显示的（Chrome: <code>Cmd+Shift+B</code>）</li>
+  <li>把下面这个按钮 <strong>拖到书签栏</strong>：</li>
+</ol>
+
+<p style="text-align:center;margin:30px 0">
+  <a class="bookmarklet" href="javascript:(function(){const%20s=new%20Set();function%20c(){document.querySelectorAll('a[href*=%22/video/%22],a[href*=%22/note/%22]').forEach(a%3D>{if(a.href)s.add(a.href)})}c();let%20i=0;const%20t=setInterval(()%3D>{window.scrollTo(0,document.body.scrollHeight);const%20b=s.size;c();if(s.size===b%26%26++i>3){clearInterval(t);const%20u=[...s].join('\n');navigator.clipboard.writeText(u).then(()%3D>alert('✔️%20已复制%20'+s.size+'个视频链接！'))}else{i=0}},1500);setTimeout(()%3D>clearInterval(t),90000)})();">📋 提取喜欢列表</a>
+</p>
+
+<h3>每天使用（两秒钟）：</h3>
+<ol>
+  <li>打开 <a href="https://www.douyin.com/user/self?showTab=like" target="_blank">抖音喜欢页</a></li>
+  <li>点书签栏的 <strong>"📋 提取喜欢列表"</strong></li>
+  <li>弹窗提示后，<strong>把链接发给 Claude</strong></li>
+</ol>
+</div>
+
+<p style="color:#999;font-size:13px">⚠️ 如果拖不动，右键复制链接 → 手动添加到书签</p>
+
+</body>
+</html>

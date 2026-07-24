@@ -18,12 +18,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          bash douyin-collector/scripts/monitor-daily.sh
+          bash 02_GitHub创作者监控/scripts/monitor.sh
 
       - name: Commit Report
         run: |
           git config user.name "AI Monitor Bot"
           git config user.email "bot@ai-monitor.local"
-          git add AI知识体系/每日监控/
+          git add 02_GitHub创作者监控/reports/
           git diff --staged --quiet || git commit -m "📡 Daily: $(date +%Y-%m-%d)"
           git push
